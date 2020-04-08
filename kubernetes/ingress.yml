@@ -1,0 +1,23 @@
+# Ingress rules that expose the service.
+# This one works for AWS's ingress controller extension.
+# See https://aws.amazon.com/blogs/opensource/kubernetes-ingress-aws-alb-ingress-controller/
+# If your Kubernetes cluster uses a different ingress controller you will have to adapt this to work with the extensions/incantations it requires.
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: bh20-simple-web-uploader-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+  labels:
+    app: bh20-simple-web-uploader
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: bh20-simple-web-uploader-service
+              servicePort: 80
+              
+

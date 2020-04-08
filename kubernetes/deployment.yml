@@ -1,0 +1,47 @@
+# Kubernetes YAML file to deploy from quay.io/adamnovak/bh20-simple-web-uploader
+# Based off https://medium.com/google-cloud/a-guide-to-deploy-flask-app-on-google-kubernetes-engine-bfbbee5c6fb
+# This only makes the servers for the app, identified by an app=bh20-simple-web-uploader label.
+# You also need the service deployed to find these pods and hook them up to a port.
+# And then you need the ingress rule deployed to give that service a host header to match and get web traffic to it.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bh20-simple-web-uploader-deployment
+spec:
+  replicas: 1
+  selector:
+    # These pods are considered to be part of the deployment
+    matchLabels:
+      app: bh20-simple-web-uploader
+  template:
+    metadata:
+      # Make sure to label the pod as part of the depolyment
+      labels:
+        app: bh20-simple-web-uploader
+    spec:
+      containers:
+        - name: wsgi
+          image: quay.io/adamnovak/bh20-simple-web-uploader:master
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: 512Mi
+            limits:
+              memory: 512Mi
+          # Watch to make sure server is working
+          # See https://github.com/mrasap/flask-kubernetes/blob/master/frontend-deployment.yaml
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            periodSeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            periodSeconds: 30

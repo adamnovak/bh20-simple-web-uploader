@@ -1,0 +1,13 @@
+# Service that lets you find and talk to the pods in the deployment.
+apiVersion: v1
+kind: Service
+metadata:
+  name: bh20-simple-web-uploader-service
+spec:
+  # Route TCP port 80 on the service IP to the backend port 8080
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: bh20-simple-web-uploader
