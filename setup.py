@@ -15,7 +15,11 @@ try:
 except ImportError:
     tagger = egg_info_cmd.egg_info
 
-install_requires = ["flask", "bh20-seq-uploader @ git+https://github.com/arvados/bh20-seq-resource@master"]
+install_requires = [
+    "flask",
+    "pyyaml",
+    "bh20-seq-uploader @ git+https://github.com/arvados/bh20-seq-resource@master"
+]
 
 needs_pytest = {"pytest", "test", "ptr"}.intersection(sys.argv)
 pytest_runner = ["pytest < 6", "pytest-runner < 5"] if needs_pytest else []
