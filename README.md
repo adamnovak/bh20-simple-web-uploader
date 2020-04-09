@@ -26,7 +26,13 @@ This runs on [http://127.0.0.1:8000/](http://127.0.0.1:8000/) by default, but ca
 
 ## GNU Guix
 
-To run the web uploader in a GNU Guix container
+To run the web uploader in a GNU Guix environment
+
+```
+guix environment guix --ad-hoc git python python-flask python-pyyaml nss-certs --network openssl -- env FLASK_APP=bh20simplewebuploader/main.py flask run
+```
+
+The containerized version looks like
 
 ```
 guix environment -C guix --ad-hoc git python python-flask python-pyyaml nss-certs --network openssl
